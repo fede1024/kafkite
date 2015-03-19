@@ -25,7 +25,6 @@
   (async/thread
     (loop [sock (<!! accept-ch)]
       (async/thread
-        (println 'here)
         (when sock
           (with-open [socket sock]
             (msg-to-ch socket line-ch))))
@@ -37,12 +36,14 @@
      (async/thread
        (try
          (while (not (.isClosed server-sock))
-           (let [socket (.accept server-sock)]
-             (log/info "Connection accepted from" (.getPort socket) (.getRemoteSocketAddress socket))
+           (let [socket (.accept server-sock)
+                 port (.getPort socket)
+                 addr (.getHostAddress (.getInetAddress socket))]
+             (log/debug "Connection accepted from" addr port)
              (async/thread
                (with-open [sock socket]
                  (msg-to-ch socket line-ch))
-               (log/info "Connection closed" (.getPort socket) (.getRemoteSocketAddress socket)))))
+               (log/debug "Connection closed" addr port))))
          (catch java.net.SocketException e
            nil)
          (finally

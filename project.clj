@@ -8,6 +8,7 @@
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [clj-kafka "0.2.8-0.8.1.1"]
                  [zookeeper-clj "0.9.1"]
+                 [cheshire "5.4.0"]
                  [com.taoensso/timbre "3.4.0"] ]
   :main ^:skip-aot kafkite.core
   :aot [kafkite.kafka.partitioner]

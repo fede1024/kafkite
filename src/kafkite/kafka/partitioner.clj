@@ -1,15 +1,13 @@
 (ns kafkite.kafka.partitioner
   (:gen-class
     :name kafkite.kafka.partitioner
+    :implements [kafka.producer.Partitioner]
     :init init
     :state state
-    :constructors {[kafka.utils.VerifiableProperties] []}
-    :implements [kafka.producer.Partitioner]))
+    :constructors {[kafka.utils.VerifiableProperties] []}))
 
 (defn -init [properties]
-  (println 'prop properties)
   [[] (ref properties)])
 
 (defn -partition [this k part-num]
-  (println '>> k part-num)
-  0)
+  (mod (hash k) part-num))
